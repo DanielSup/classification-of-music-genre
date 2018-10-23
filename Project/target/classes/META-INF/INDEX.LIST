@@ -1,0 +1,21 @@
+JarIndex-Version: 1.0
+
+MPEG7AudioEnc.jar
+de
+de/crysandt
+de/crysandt/audio
+de/crysandt/audio/mpeg7audio
+de/crysandt/audio/mpeg7audio/mci
+de/crysandt/audio/mpeg7audio/msgs
+de/crysandt/hmm
+de/crysandt/math
+de/crysandt/util
+de/crysandt/xml
+it
+it/univpm
+it/univpm/deit
+it/univpm/deit/audio
+COPYING
+mpeg7audioenc.xsd
+readme.txt
+
