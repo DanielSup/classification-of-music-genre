@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.7.1
-Created-By: 1.5.0_16-133 (Apple Inc.)
-Main-Class: de.crysandt.audio.mpeg7audio.MP7DocumentBuilder
-Version: 0.4-rc3
-Date: 2009-06-13 08:33
+Archiver-Version: Plexus Archiver
+Built-By: jsh2
+Created-By: Apache Maven 3.5.0
+Build-Jdk: 1.8.0_121
 

@@ -21,6 +21,7 @@ import model.Model;
 import org.w3c.dom.Document;
 
 
+
 public class MainApp extends Application {
     private Model model;
     @Override
@@ -28,7 +29,7 @@ public class MainApp extends Application {
         
         Model model = new Model();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
-        Parent root = loader.load();
+        Parent root = (Parent) loader.load();
         FXMLController controller = loader.<FXMLController>getController();
         controller.setModel(model);
         Scene scene = new Scene(root);

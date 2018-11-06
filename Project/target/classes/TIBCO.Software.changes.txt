@@ -1,0 +1,41 @@
+
+TIBCO Software Inc. has made modifications to certain files of the Original Code of this component as further described below.
+The Original Code is “iText, a free JAVA-PDF library”, by Initial Developer, Bruno Lowagie, and Co-Developer, Paulo Soares.
+
+
+#1 Fix for transparency issue with setClip method in PdfGraphics2D
+Date: August 28, 2015
+Modified files:
+com/lowagie/text/pdf/PdfGraphics2D.java
+
+#2 Fix for transparency bleeding for Batik gradients
+Date: August 31, 2015
+Modified files:
+com/lowagie/text/pdf/PdfGraphics2D.java
+
+#3 Fix for stroke opacity state in the create() method of PdfGraphics2D
+Date: September 3, 2015
+Modified files:
+com/lowagie/text/pdf/PdfGraphics2D.java
+
+#4 Method to directly write AWT GlyphVectors to PDF for Indic scripts support
+Date: September 3, 2015
+Modified files:
+com/lowagie/text/pdf/FontDetails.java
+com/lowagie/text/pdf/PdfContentByte.java
+com/lowagie/text/pdf/PdfGraphics2D.java
+com/lowagie/text/pdf/TrueTypeFont.java
+com/lowagie/text/pdf/TrueTypeFontUnicode.java
+
+#5 No character spacing in justified lines with a single word
+Date: January 18, 2016
+Modified files:
+com/lowagie/text/pdf/PdfDocument.java
+
+#6 Upgrade Bouncy Castle dependencies to jdk15on-1.52
+Date: March 6, 2017
+Modified files:
+com/lowagie/text/pdf/OcspClientBouncyCastle.java
+com/lowagie/text/pdf/PdfPKCS7.java
+com/lowagie/text/pdf/PdfPublicKeySecurityHandler.java
+com/lowagie/text/pdf/PdfReader.java
