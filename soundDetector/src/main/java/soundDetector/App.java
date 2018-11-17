@@ -6,8 +6,11 @@ import org.openimaj.audio.AudioPlayer;
 import org.openimaj.audio.SampleChunk;
 import org.openimaj.audio.analysis.FourierTransform;
 import org.openimaj.audio.features.MFCC;
+import org.openimaj.audio.samples.SampleBuffer;
 import org.openimaj.video.xuggle.XuggleAudio;
 import org.openimaj.vis.audio.AudioWaveform;
+import soundDetector.descriptor.Descriptor;
+import soundDetector.descriptor.DescriptorCalculator;
 
 
 /**
@@ -16,21 +19,14 @@ import org.openimaj.vis.audio.AudioWaveform;
  */
 public class App {
     public static void main(String[] args) {
-        XuggleAudio xa0 = new XuggleAudio(new File("../genres/techno/Crazy Frog - Axel F-[AudioTrimmer.com].mp3"));
-        XuggleAudio xa = new XuggleAudio(new File("../genres/techno/Eiffel 65 - Blue (Da Ba Dee)-[AudioTrimmer.com].mp3"));
+        XuggleAudio xa0 = new XuggleAudio(new File("../genres/soundtrack/Future World Music - Dream Chasers.mp3"));
+        XuggleAudio xa1 = new XuggleAudio(new File("../genres/techno/Club Inferno - scarf.mp3"));
+        //XuggleAudio xa = new XuggleAudio(new File("../genres/techno/Eiffel 65 - Blue (Da Ba Dee)-[AudioTrimmer.com].mp3"));
+        DescriptorCalculator calculator = new DescriptorCalculator();
+        Descriptor soundtrack = calculator.computeDescriptor(xa0);
+        Descriptor techno = calculator.computeDescriptor(xa1);
+        MFCC mfcc = new MFCC(xa1);
         SampleChunk sc = null;
-        /** while ((sc = xa.nextSampleChunk()) != null) {
-            
-            byte[] samples = sc.getSamples();
-            for(int i = 0; i < samples.length; i++) {
-                // System.out.println(samples[i]);
-            }
-           // System.out.println("");
-        }
-        System.out.println(""); **/
-        long time = System.currentTimeMillis();
-        MFCC mfcc = new MFCC(xa);
-        
         while ((sc = mfcc.nextSampleChunk()) != null) {
             double[][] mfccs = mfcc.getLastCalculatedFeature();
             for (int i = 0; i < mfccs.length; i++) {
@@ -40,21 +36,8 @@ public class App {
                 System.out.println("");
             }
         }
-        System.out.println("");
-        
-        MFCC mfcc0 = new MFCC(xa0);
-        
-        while ((sc = mfcc0.nextSampleChunk()) != null) {
-            double[][] mfccs = mfcc0.getLastCalculatedFeature();
-            for (int i = 0; i < mfccs.length; i++) {
-                for (int j = 0; j < mfccs[i].length; j++) {
-                    System.out.print(mfccs[i][j]+" ");
-                }
-                System.out.println("");
-            }
-        }
-        long current = System.currentTimeMillis();
-        System.out.println(current-time+" ms");
-        System.out.println("");
+System.out.println("");
+        soundtrack.print();
+        techno.print();
     }
 }
