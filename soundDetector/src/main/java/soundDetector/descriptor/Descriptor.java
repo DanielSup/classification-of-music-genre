@@ -18,7 +18,7 @@ public class Descriptor {
      * @upDistance[i] only the up distance for i-th descriptor
      * @downDistance[i] only the down distance for i-th descriptor
      * @hopsNumber[i] the number of changes for i-th descriptor (from raising to falling/from falling to raising) 
-     * wholeDistance = upDistance + downDistance
+     * @wholeDistance = upDistance + downDistance
      */
     private double [] max;
     private double [] min;

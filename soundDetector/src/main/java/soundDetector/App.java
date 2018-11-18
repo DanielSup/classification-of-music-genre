@@ -9,8 +9,12 @@ import org.openimaj.audio.features.MFCC;
 import org.openimaj.audio.samples.SampleBuffer;
 import org.openimaj.video.xuggle.XuggleAudio;
 import org.openimaj.vis.audio.AudioWaveform;
+import soundDetector.data.Model;
 import soundDetector.descriptor.Descriptor;
 import soundDetector.descriptor.DescriptorCalculator;
+import soundDetector.song.Song;
+import soundDetector.song.SongManager;
+import soundDetector.song.SongPart;
 
 
 /**
@@ -19,25 +23,27 @@ import soundDetector.descriptor.DescriptorCalculator;
  */
 public class App {
     public static void main(String[] args) {
-        XuggleAudio xa0 = new XuggleAudio(new File("../genres/soundtrack/Future World Music - Dream Chasers.mp3"));
-        XuggleAudio xa1 = new XuggleAudio(new File("../genres/techno/Club Inferno - scarf.mp3"));
-        //XuggleAudio xa = new XuggleAudio(new File("../genres/techno/Eiffel 65 - Blue (Da Ba Dee)-[AudioTrimmer.com].mp3"));
-        DescriptorCalculator calculator = new DescriptorCalculator();
-        Descriptor soundtrack = calculator.computeDescriptor(xa0);
-        Descriptor techno = calculator.computeDescriptor(xa1);
-        MFCC mfcc = new MFCC(xa1);
-        SampleChunk sc = null;
-        while ((sc = mfcc.nextSampleChunk()) != null) {
-            double[][] mfccs = mfcc.getLastCalculatedFeature();
-            for (int i = 0; i < mfccs.length; i++) {
-                for (int j = 0; j < mfccs[i].length; j++) {
-                    System.out.print(mfccs[i][j]+" ");
+        //first need to inicialize model
+        Model model = new Model();
+        //create songManager instance
+        SongManager songManager = new SongManager(model);
+        //create instance for mass descriptor calculator
+        DescriptorCalculator des = new DescriptorCalculator(model);
+        //upload all songs to model
+        int uploadedSongs = songManager.uploadSongs();
+        System.out.println("Uploaded songs: "+uploadedSongs);
+        //trim all songs into 3 seconds intervals 
+        songManager.trimSongs(3);
+        //compute descriptors for 5 SongParts for every song (rovnomerne rozdelene)
+        des.computeDescriptors(5);
+        //show the computed descriptors for each song
+        for(Song song : model.getSongs().values()){
+            System.out.println("Song: "+song.getName()+", genre: "+song.getGenre()+", descriptors: ");
+            for(SongPart songPart : song.getSongParts()){
+                if(songPart.getDescriptor()!=null){
+                    songPart.getDescriptor().print();
                 }
-                System.out.println("");
             }
         }
-System.out.println("");
-        soundtrack.print();
-        techno.print();
     }
 }
