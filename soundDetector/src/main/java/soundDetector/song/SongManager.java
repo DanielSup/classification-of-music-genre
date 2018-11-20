@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.openimaj.audio.SampleChunk;
+import soundDetector.clustering.Cluster;
 import soundDetector.data.Model;
 
 /**
@@ -24,6 +25,10 @@ public class SongManager {
         this.model = model;
     }
 
+    /**
+     * Upload all songs to model
+     * @return number of uploaded songs
+     */
     public int uploadSongs() {
         int tmpCount = 0;
         File[] genres = new File("../genres/").listFiles();
@@ -34,21 +39,32 @@ public class SongManager {
                     return name.endsWith(".mp3");
                 }
             });
+            if(!model.getClusters().containsKey(genre.getName())){
+                model.getClusters().put(genre.getName(), new Cluster(genre.getName()));
+            }
             for (File song : songs) {
                 System.out.println("Song name: "+song.getName()+", song genre: "+song.getParentFile().getName());
-                if (!model.getSongs().containsKey(song.getName())) {
-                    model.getSongs().put(song.getName(), new Song(song));
-                    tmpCount++;
-                }
+                model.getClusters().get(genre.getName()).getSongs().add(new Song(song));
+                tmpCount++;
+                
             }
         }
         return tmpCount;
     }
+    
+    public void uploadComputingSong(File file){
+        model.setComputingSong(new Song(file));
+    }
 
+    /**
+     * 
+     * @param duration duration in seconds for trimming
+     */
     public void trimSongs(int duration) {
         int durationCounter;
         int timeCounter;
-        for (Song song : model.getSongs().values()) {
+        for (Cluster cluster : model.getClusters().values()){
+        for (Song song : cluster.getSongs()) {
             if (song.getSongParts().isEmpty()) {
                 SampleChunk sc = null;
                 timeCounter = 0;
@@ -67,4 +83,24 @@ public class SongManager {
             }
         }
     }
+    }
+    public void trimComputingSong(int duration){
+        int durationCounter;
+        int timeCounter;
+                SampleChunk sc = null;
+                timeCounter = 0;
+                System.out.println("Trimming song: "+model.getComputingSong().getName()+", genre: "+model.getComputingSong().getGenre());
+                while ((sc = model.getComputingSong().getAudio().nextSampleChunk()) != null) {
+                    durationCounter = 0;
+                    SongPart songPart = new SongPart(timeCounter);
+                    while ((durationCounter < duration * chunksPerSecond) && (sc != null)) {
+                        songPart.getChunks().add(sc.clone());
+                        sc = model.getComputingSong().getAudio().nextSampleChunk();
+                        durationCounter++;
+                        timeCounter++;
+                    }
+                    model.getComputingSong().getSongParts().add(songPart);
+                }
+            
+        }
 }

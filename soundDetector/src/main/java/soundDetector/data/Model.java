@@ -6,6 +6,7 @@
 package soundDetector.data;
 
 import java.util.HashMap;
+import soundDetector.clustering.Cluster;
 import soundDetector.song.Song;
 
 /**
@@ -13,14 +14,26 @@ import soundDetector.song.Song;
  * @author Brka
  */
 public class Model {
-    private HashMap<String,Song> songs;
-    
+    private HashMap<String,Cluster> clusters;
+    private Song computingSong;
     public Model(){
-        this.songs = new HashMap<String,Song>();
+        this.clusters = new HashMap<String,Cluster>();
     }
 
-    public HashMap<String,Song> getSongs() {
-        return songs;
+    public HashMap<String,Cluster> getClusters() {
+        return clusters;
     }
+
+    public Song getComputingSong() {
+        return computingSong;
+    }
+
+    public void setComputingSong(Song computingSong) {
+        this.computingSong = computingSong;
+    }
+    
+    
+    
+    
     
 }

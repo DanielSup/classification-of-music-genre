@@ -8,6 +8,7 @@ package soundDetector.descriptor;
 import org.openimaj.audio.SampleChunk;
 import org.openimaj.audio.features.MFCC;
 import org.openimaj.video.xuggle.XuggleAudio;
+import soundDetector.clustering.Cluster;
 import soundDetector.data.Model;
 import soundDetector.song.Song;
 import soundDetector.song.SongPart;
@@ -28,12 +29,22 @@ public class DescriptorCalculator {
      * @return Descriptor object with computed values
      */
     public void computeDescriptors(int countPerSong){
-        for(Song song : model.getSongs().values()){
-            for(int i = 0; i < countPerSong; i++){
+        for(Cluster cluster : model.getClusters().values()){
+        for(Song song : cluster.getSongs()){
+            computeDescriptors(song,countPerSong);
+        }
+        }
+        if(model.getComputingSong()!=null){
+            this.computeDescriptors(model.getComputingSong(), countPerSong);
+        }
+    }
+    
+    public void computeDescriptors(Song song, int countPerSong){
+        System.out.println("Computing descriptors for song: "+song.getName());
+        for(int i = 0; i < countPerSong; i++){
                 int partsCount = song.getSongParts().size();
                 song.getSongParts().get(i*(partsCount/countPerSong)).computeDescriptor();
+                song.getSongPartsComputedDescriptor().add(song.getSongParts().get(i*(partsCount/countPerSong)));
             }
-        }
-       
     }
 }

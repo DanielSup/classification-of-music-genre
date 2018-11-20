@@ -9,6 +9,8 @@ import org.openimaj.audio.features.MFCC;
 import org.openimaj.audio.samples.SampleBuffer;
 import org.openimaj.video.xuggle.XuggleAudio;
 import org.openimaj.vis.audio.AudioWaveform;
+import soundDetector.clustering.Cluster;
+import soundDetector.clustering.ClusterManager;
 import soundDetector.data.Model;
 import soundDetector.descriptor.Descriptor;
 import soundDetector.descriptor.DescriptorCalculator;
@@ -22,9 +24,12 @@ import soundDetector.song.SongPart;
  *
  */
 public class App {
+    private static final int trimDuration = 2;
+    private static final int descriptorsPerSong = 20;
     public static void main(String[] args) {
         //first need to inicialize model
         Model model = new Model();
+        ClusterManager clusterManager = new ClusterManager(model);
         //create songManager instance
         SongManager songManager = new SongManager(model);
         //create instance for mass descriptor calculator
@@ -33,17 +38,24 @@ public class App {
         int uploadedSongs = songManager.uploadSongs();
         System.out.println("Uploaded songs: "+uploadedSongs);
         //trim all songs into 3 seconds intervals 
-        songManager.trimSongs(3);
+        songManager.trimSongs(trimDuration);
         //compute descriptors for 5 SongParts for every song (rovnomerne rozdelene)
-        des.computeDescriptors(5);
+        des.computeDescriptors(descriptorsPerSong);
+        songManager.uploadComputingSong(new File("C:\\Own_Projects\\MI-VMW\\tests\\Hans Zimmer - Epilogue Main Theme.mp3"));
+        songManager.trimComputingSong(trimDuration);
+        des.computeDescriptors(model.getComputingSong(), descriptorsPerSong);
+        clusterManager.computeClusteringResult().printResults();
+        //for(Cluster cluster : model.getClusters().values()){
+        //    cluster.computeDistanceBetweenClusterSongs();
+        //}
         //show the computed descriptors for each song
-        for(Song song : model.getSongs().values()){
+        /*for(Song song : model.getSongs().values()){
             System.out.println("Song: "+song.getName()+", genre: "+song.getGenre()+", descriptors: ");
             for(SongPart songPart : song.getSongParts()){
                 if(songPart.getDescriptor()!=null){
                     songPart.getDescriptor().print();
                 }
             }
-        }
+        }*/
     }
 }

@@ -19,6 +19,7 @@ public class Song {
      * 
      */
     private ArrayList<SongPart> songParts;
+    private ArrayList<SongPart> songPartsComputedDescriptor;
     private String genre;
     private String name;
     private XuggleAudio audio;
@@ -28,6 +29,7 @@ public class Song {
         genre = file.getParentFile().getName();
         name = file.getName();
         songParts = new ArrayList<SongPart>();
+        songPartsComputedDescriptor = new ArrayList<SongPart>();
     }
 
 
@@ -35,6 +37,12 @@ public class Song {
     public ArrayList<SongPart> getSongParts() {
         return songParts;
     }
+
+    public ArrayList<SongPart> getSongPartsComputedDescriptor() {
+        return songPartsComputedDescriptor;
+    }
+    
+    
 
     public String getGenre() {
         return genre;
