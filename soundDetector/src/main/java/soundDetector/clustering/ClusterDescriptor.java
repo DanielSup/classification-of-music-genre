@@ -16,13 +16,24 @@ public class ClusterDescriptor {
     private String descriptor;
     private int descriptorID;
     private double value;
-    public ClusterDescriptor(Song song, String descriptor, int descriptorID, double value){
+    private double descriptorFactor;
+    public ClusterDescriptor(Song song, String descriptor, int descriptorID, double value, double descriptorFactor){
         this.song = song;
         this.descriptor = descriptor;
         this.descriptorID = descriptorID;
         this.value = value;
+        this.descriptorFactor = descriptorFactor;
     }
 
+    public double getDescriptorFactor() {
+        return descriptorFactor;
+    }
+
+    public void setDescriptorFactor(double descriptorFactor) {
+        this.descriptorFactor = descriptorFactor;
+    }
+
+    
     public void setValue(double value) {
         this.value = value;
     }

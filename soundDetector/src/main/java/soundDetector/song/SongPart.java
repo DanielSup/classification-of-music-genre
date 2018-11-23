@@ -40,6 +40,11 @@ public class SongPart {
     public Descriptor getDescriptor() {
         return descriptor;
     }
+
+    public void setDescriptor(Descriptor descriptor) {
+        this.descriptor = descriptor;
+    }
+    
     
     
     public void computeDescriptor(){
@@ -113,8 +118,7 @@ public class SongPart {
     }
 
     public void print(){
-        for(SampleChunk sc : chunks)
-            System.out.println(sc.toString());
+        System.out.println(startTime);
     }
     
 }

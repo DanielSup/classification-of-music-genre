@@ -14,6 +14,7 @@ import soundDetector.clustering.ClusterManager;
 import soundDetector.data.Model;
 import soundDetector.descriptor.Descriptor;
 import soundDetector.descriptor.DescriptorCalculator;
+import soundDetector.file.FileManager;
 import soundDetector.song.Song;
 import soundDetector.song.SongManager;
 import soundDetector.song.SongPart;
@@ -26,25 +27,31 @@ import soundDetector.song.SongPart;
 public class App {
     private static final int trimDuration = 2;
     private static final int descriptorsPerSong = 20;
+    private static Model model;
+    private static FileManager fileManager;
+    private static SongManager songManager;
+    private static ClusterManager clusterManager;
+    private static DescriptorCalculator des;
     public static void main(String[] args) {
-        //first need to inicialize model
-        Model model = new Model();
-        ClusterManager clusterManager = new ClusterManager(model);
-        //create songManager instance
-        SongManager songManager = new SongManager(model);
-        //create instance for mass descriptor calculator
-        DescriptorCalculator des = new DescriptorCalculator(model);
-        //upload all songs to model
-        int uploadedSongs = songManager.uploadSongs();
-        System.out.println("Uploaded songs: "+uploadedSongs);
-        //trim all songs into 3 seconds intervals 
-        songManager.trimSongs(trimDuration);
-        //compute descriptors for 5 SongParts for every song (rovnomerne rozdelene)
-        des.computeDescriptors(descriptorsPerSong);
-        songManager.uploadComputingSong(new File("C:\\Own_Projects\\MI-VMW\\tests\\Hans Zimmer - Epilogue Main Theme.mp3"));
-        songManager.trimComputingSong(trimDuration);
-        des.computeDescriptors(model.getComputingSong(), descriptorsPerSong);
-        clusterManager.computeClusteringResult().printResults();
+        //first need to inicialize objects
+        model = new Model();
+        fileManager = new FileManager(model);
+        clusterManager = new ClusterManager(model);
+        songManager = new SongManager(model);
+        des = new DescriptorCalculator(model);
+        //upload all cluster songs to model
+        //uploadClusterSongs();
+        //fileManager.exportToFile("C:\\Own_Projects\\MI-VMW\\tests\\export.json");
+        fileManager.importFromFile("C:\\Own_Projects\\MI-VMW\\tests\\export.json");
+        uploadWorkingSong("C:\\Own_Projects\\MI-VMW\\tests\\John Denver - Take Me Home Country Roads (Audio).mp3");
+        System.out.println("OneToMany:");
+        clusterManager.computeClusteringResultOneToMany().printResults();
+        System.out.println("");
+        System.out.println("");
+        System.out.println("OneToOne:");
+        clusterManager.computeClusteringResultOneToOne().printResults();
+        
+        
         //for(Cluster cluster : model.getClusters().values()){
         //    cluster.computeDistanceBetweenClusterSongs();
         //}
@@ -57,5 +64,23 @@ public class App {
                 }
             }
         }*/
+    }
+    
+    /**
+     * @path path to the song which need to be analyzed
+    */
+    private static void uploadWorkingSong(String path){
+        songManager.uploadComputingSong(new File(path));
+        songManager.trimComputingSong(trimDuration);
+        des.computeDescriptors(model.getComputingSong(), descriptorsPerSong);
+    }
+    
+    /**
+     * upload all clusters songs from different genres, trim them and compute Descriptors
+     */
+    private static void uploadClusterSongs(){
+        songManager.uploadSongs();
+        songManager.trimSongs(trimDuration);
+        des.computeDescriptors(descriptorsPerSong);
     }
 }

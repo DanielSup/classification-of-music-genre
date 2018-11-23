@@ -41,8 +41,8 @@ public class DescriptorCalculator {
     
     public void computeDescriptors(Song song, int countPerSong){
         System.out.println("Computing descriptors for song: "+song.getName());
-        for(int i = 0; i < countPerSong; i++){
-                int partsCount = song.getSongParts().size();
+        for(int i = 1; i <= countPerSong; i++){
+                int partsCount = song.getSongParts().size()-(song.getSongParts().size()/countPerSong);
                 song.getSongParts().get(i*(partsCount/countPerSong)).computeDescriptor();
                 song.getSongPartsComputedDescriptor().add(song.getSongParts().get(i*(partsCount/countPerSong)));
             }

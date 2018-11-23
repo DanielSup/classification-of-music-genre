@@ -7,6 +7,7 @@ package soundDetector.clustering;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import soundDetector.data.Model;
 import soundDetector.song.Song;
 import soundDetector.song.SongPart;
@@ -18,11 +19,19 @@ import soundDetector.song.SongPart;
 public class Cluster {
     private String genre;
     private ArrayList<Song> songs;
+    private HashMap<Integer,ClusterFactorDescriptor> factor;
     public Cluster(String genre){
         this.genre = genre;
         this.songs = new ArrayList<Song>();
+        this.factor = new HashMap<Integer,ClusterFactorDescriptor>();
     }
 
+    public HashMap<Integer,ClusterFactorDescriptor> getFactor() {
+        return factor;
+    }
+    
+
+    
     public String getGenre() {
         return genre;
     }
@@ -59,5 +68,14 @@ public class Cluster {
         }
     }
     
+    public void printClusterFactorDes(){
+        System.out.println("Cluster: "+this.getGenre());
+        for(Integer integ : factor.keySet()){
+            System.out.println("Key:"+integ);
+            for(String desName : factor.get(integ).getDescriptors().keySet()){
+                System.out.println("desName: "+desName+", value: "+factor.get(integ).getDescriptors().get(desName));
+            }
+        }
+    }
     
 }
