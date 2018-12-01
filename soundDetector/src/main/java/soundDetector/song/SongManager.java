@@ -84,6 +84,28 @@ public class SongManager {
         }
     }
     }
+    public void trimSong(Song song, int duration){
+        int durationCounter;
+        int timeCounter;
+            if (song.getSongParts().isEmpty()) {
+                SampleChunk sc = null;
+                timeCounter = 0;
+                System.out.println("Trimming song: "+song.getName()+", genre: "+song.getGenre());
+                while ((sc = song.getAudio().nextSampleChunk()) != null) {
+                    durationCounter = 0;
+                    SongPart songPart = new SongPart(timeCounter);
+                    while ((durationCounter < duration * chunksPerSecond) && (sc != null)) {
+                        songPart.getChunks().add(sc.clone());
+                        sc = song.getAudio().nextSampleChunk();
+                        durationCounter++;
+                        timeCounter++;
+                    }
+                    song.getSongParts().add(songPart);
+                }
+            }
+    song.setAudio(null);
+    }
+    
     public void trimComputingSong(int duration){
         int durationCounter;
         int timeCounter;

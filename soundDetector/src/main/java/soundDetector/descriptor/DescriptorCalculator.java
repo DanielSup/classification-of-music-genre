@@ -20,6 +20,7 @@ import soundDetector.song.SongPart;
  */
 public class DescriptorCalculator {
     private Model model;
+    private final int chunksPerSecond = 38;
     public DescriptorCalculator(Model model) {
         this.model = model;
     }
@@ -43,8 +44,14 @@ public class DescriptorCalculator {
         System.out.println("Computing descriptors for song: "+song.getName());
         for(int i = 1; i <= countPerSong; i++){
                 int partsCount = song.getSongParts().size()-(song.getSongParts().size()/countPerSong);
+                //System.out.println("partsCount: "+partsCount+",song.getSongParts().size(): "+song.getSongParts().size()+", i*(partsCount/countPerSong): "+i*(partsCount/countPerSong));
                 song.getSongParts().get(i*(partsCount/countPerSong)).computeDescriptor();
                 song.getSongPartsComputedDescriptor().add(song.getSongParts().get(i*(partsCount/countPerSong)));
             }
+        for(SongPart songPart : song.getSongParts()){
+            songPart.getChunks().clear();
+        }
     }
+    
+    
 }

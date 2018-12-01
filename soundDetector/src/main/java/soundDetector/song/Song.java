@@ -36,6 +36,11 @@ public class Song {
         }
     }
 };
+
+    public void setAudio(XuggleAudio audio) {
+        this.audio = audio;
+    }
+    
     public Song(File file){
         audio = new XuggleAudio(file);
         genre = file.getParentFile().getName();
